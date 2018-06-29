@@ -39,14 +39,12 @@ public class CampgroundCLI {
 	}
 	
 	public void run() {
-		while (choice == 0 || choice == 1) {
-			
+		while (true) {
 			displayParkMenu();
 			displayCampgroundMenu();
-		}
 			displayAvailableSites();
 			bookCampSite();
-		
+		}
 	
 	}
 	
