@@ -1,5 +1,6 @@
 package com.techelevator;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,19 +21,23 @@ public class JDBCReservationDAO {
 		Reservation reservation = new Reservation();
 		reservation.setReservation_id(result.getInt("reservation_id"));
 		reservation.setSite_id(result.getInt("site_id"));
-		reservation.setCreate_date(result.getString("create_date"));
-		reservation.setFrom_date(result.getString("from_date"));
-		reservation.setTo_date(result.getString("to_date"));
+		reservation.setCreate_date(result.getDate("create_date"));
+		reservation.setFrom_date(result.getDate("from_date"));
+		reservation.setTo_date(result.getDate("to_date"));
 		reservation.setName(result.getString("name"));
 		return reservation;
 	}
 	
-	public List<Reservation> checkForAvailableReservations(String start_date, String end_date, int campground_id) {
+	public List<Reservation> checkForAvailableReservations(LocalDate startDate, LocalDate endDate, int campground_id) {
 		List<Reservation> availableSites = new ArrayList <Reservation>();
+		//String reservationAvailability = "SELECT * FROM site " + 
+		//		"WHERE campground_id = ? " + 
+		//		" AND site_id NOT IN (SELECT site_id FROM reservation WHERE from_date >= ? AND to_date <= ?)";
 		String reservationAvailability = "SELECT * FROM site " + 
 				"WHERE campground_id = ? " + 
-				" AND site_id NOT IN (SELECT * FROM reservation WHERE from_date >= '?' AND to_date <= '?')";
-		SqlRowSet results = jdbcTemplate.queryForRowSet(reservationAvailability, campground_id, start_date, end_date);
+				" AND site_id NOT IN (1, 2, 3, 4)";
+		//SqlRowSet results = jdbcTemplate.queryForRowSet(reservationAvailability, campground_id, startDate, endDate);
+		SqlRowSet results = jdbcTemplate.queryForRowSet(reservationAvailability, campground_id);
 		while (results.next()) {
 			availableSites.add(mapReservationToRow(results));
 		}

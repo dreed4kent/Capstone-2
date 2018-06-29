@@ -14,9 +14,9 @@ public class Menu {
 		this.in = new Scanner(input);
 	}
 	
-private Object getChoiceFromUser() {
+//private Object getChoiceFromUser() {
 	
-}
+//}
 
 
 }

@@ -1,5 +1,7 @@
 package com.techelevator;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -72,16 +74,22 @@ public class CampgroundCLI {
 	}
 	
 	private void displayAvailableSites() {
+		LocalDate date = LocalDate.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");
 		System.out.println("Enter start date: YYYY-MM-DD");
 		String start = in.nextLine();
 		in.nextLine();
+		start = date.format(formatter);
+		LocalDate startDate = LocalDate.parse(start, formatter);
 		System.out.println("Enter campground id: ");
 		int campground_id = in.nextInt();
 		in.nextLine();
 		System.out.println("Enter end date: YYYY-MM-DD");
 		String end = in.nextLine();
+		end = date.format(formatter);
+		LocalDate endDate = LocalDate.parse(end, formatter);
 		
-		List<Reservation> reservation = reservationDAO.checkForAvailableReservations(start, end, campground_id);
+		List<Reservation> reservation = reservationDAO.checkForAvailableReservations(startDate, endDate, campground_id);
 		int ctr = 1;
 		for (Reservation r : reservation) {
 			System.out.println(ctr++ + ".) " + r.getName() + " \n");
