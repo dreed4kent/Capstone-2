@@ -57,6 +57,8 @@ public class JDBCReservationDAO {
 		Reservation bookingReservation = new Reservation();
 		String sqlReserve = "Insert into reservation(site_id, name, from_date, to_date, create_date) " + 
 							"Values (?, ?, ?, ?, '2018-06-29')";
+//		Integer id = jdbcTemplate.queryForObject(sqlReserve, Integer.class, bookingReservation.getReservation_id());
+//		bookingReservation.setReservation_id(id);
 	
 		jdbcTemplate.update(sqlReserve, siteId, name, start, end);
 		
@@ -64,14 +66,14 @@ public class JDBCReservationDAO {
 	
 	
 
-	public int getNextReservationId() {
-		SqlRowSet nextId = jdbcTemplate.queryForRowSet("Select nextval('seq_reservation_id')");
-		if (nextId.next()) {
-			return nextId.getInt(1);
-		} else {
-			throw new RuntimeException("Something went wrong trying to get next Reservation Id");
-		}
-	}
+//	public int getNextReservationId() {
+//		SqlRowSet nextId = jdbcTemplate.queryForRowSet("Select nextval('seq_reservation_id')");
+//		if (nextId.next()) {
+//			return nextId.getInt(1);
+//		} else {
+//			throw new RuntimeException("Something went wrong trying to get next Reservation Id");
+//		}
+//	}
 	
 
 }

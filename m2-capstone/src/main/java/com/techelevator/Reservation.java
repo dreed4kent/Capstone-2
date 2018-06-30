@@ -1,6 +1,7 @@
 package com.techelevator;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class Reservation {
 	
@@ -10,12 +11,16 @@ public class Reservation {
 	private Date from_date;
 	private Date to_date;
 	private Date create_date;
+	
+	
 	public int getReservation_id() {
 		return reservation_id;
 	}
 	public void setReservation_id(int reservation_id) {
 		this.reservation_id = reservation_id;
 	}
+	
+	
 	public int getSite_id() {
 		return site_id;
 	}

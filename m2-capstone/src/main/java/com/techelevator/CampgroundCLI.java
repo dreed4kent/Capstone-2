@@ -77,7 +77,6 @@ public class CampgroundCLI {
 	}
 	
 	private void displayAvailableSites() {
-
 		
 		while(true) {
 		System.out.println("Enter start date: YYYY-MM-DD");
@@ -91,6 +90,20 @@ public class CampgroundCLI {
 		System.out.println("Enter campground id: ");
 		int campground_id = Integer.parseInt(in.nextLine());
 		
+		List<Site> availableSites = reservationDAO.checkForAvailableReservations(startDate, endDate, campground_id);
+			if(availableSites.isEmpty()) {
+				System.out.println("No available sites, please choose different dates.");
+			}
+			int ctr = 1;
+			for (Site r : availableSites) {
+				System.out.println(ctr++ + ".) " + r.getSite_id() + " cost of stay $" + getTotalCost(campground_id, startDate, endDate) + "\n");
+			}
+			break;
+		}
+		
+	}
+	
+	public double getTotalCost(int campground_id, LocalDate startDate, LocalDate endDate) {
 		Campground campground = campgroundDAO.getCampgroundById(campground_id);
 		
 		//compare months from open and close to start and end
@@ -104,16 +117,7 @@ public class CampgroundCLI {
 			totalCostOfStay = (monthsStayed * 30 + daysStayed) * campground.getDaily_fee(); 
 		}
 		
-		List<Site> availableSites = reservationDAO.checkForAvailableReservations(startDate, endDate, campground_id);
-			if(availableSites.isEmpty()) {
-				System.out.println("No available sites, please choose different dates.");
-			}
-			int ctr = 1;
-			for (Site r : availableSites) {
-				System.out.println(ctr++ + ".) " + r.getSite_id() + " cost of stay $" + totalCostOfStay + "\n");
-			}
-			break;
-		}
+		return totalCostOfStay;
 		
 	}
 	
@@ -135,7 +139,7 @@ public class CampgroundCLI {
 		LocalDate reservationEndDate = LocalDate.parse(ending);
 		
 		reservationDAO.bookReservation(name, reservationStartDate, reservationEndDate, choice);
-		System.out.println("your confirmation number is: " + res.getSite_id() + "\n");
+		System.out.println("your confirmation number is: " + res.getReservation_id() + "\n");
 		
 	}
 	
