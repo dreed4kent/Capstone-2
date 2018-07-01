@@ -25,7 +25,7 @@ public class JDBCReservationDAO {
 	private Reservation mapReservationToRow (SqlRowSet result) {
 		Reservation reservation = new Reservation();
 		reservation.setReservation_id(result.getInt("reservation_id"));
-		reservation.setSite_id(result.getInt("site_id"));
+		reservation.setSite_id(result.getInt("site_id")); 
 		reservation.setCreate_date(result.getDate("create_date"));
 		reservation.setFrom_date(result.getDate("from_date"));
 		reservation.setTo_date(result.getDate("to_date"));
@@ -33,7 +33,7 @@ public class JDBCReservationDAO {
 		return reservation;
 	}
 	
-	public List<Site> checkForAvailableReservations(LocalDate startDate, LocalDate endDate, int campground_id) {
+	public List<Site> checkForAvailableSites(LocalDate startDate, LocalDate endDate, int campground_id) {
 		BasicDataSource dataSource = new BasicDataSource();
 		dataSource.setUrl("jdbc:postgresql://localhost:5432/campground");
 		dataSource.setUsername("postgres");
@@ -41,8 +41,8 @@ public class JDBCReservationDAO {
 		JDBCSiteDAO siteDAO = new JDBCSiteDAO(dataSource);
 		List<Site> availableSites = new ArrayList <Site>();
 		String reservationAvailability = "SELECT * FROM site " + 
-				"WHERE campground_id = ? " + 
-				" AND site_id NOT IN (SELECT site_id FROM reservation WHERE from_date >= ? AND to_date <= ?) LIMIT 5";
+										"WHERE campground_id = ? " + 
+										" AND site_id NOT IN (SELECT site_id FROM reservation WHERE from_date >= ? AND to_date <= ?) LIMIT 5";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(reservationAvailability, campground_id, startDate, endDate);
 		while (results.next()) {
 			availableSites.add(siteDAO.mapSightToRow(results));
@@ -53,13 +53,8 @@ public class JDBCReservationDAO {
 
 	
 	public void bookReservation(String name, LocalDate start, LocalDate end, int siteId) {
-		
-		Reservation bookingReservation = new Reservation();
 		String sqlReserve = "Insert into reservation(site_id, name, from_date, to_date, create_date) " + 
 							"Values (?, ?, ?, ?, '2018-06-29')";
-//		Integer id = jdbcTemplate.queryForObject(sqlReserve, Integer.class, bookingReservation.getReservation_id());
-//		bookingReservation.setReservation_id(id);
-	
 		jdbcTemplate.update(sqlReserve, siteId, name, start, end);
 		
 	}

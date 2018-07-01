@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
-
+ 
 public class CLImethodsTest {
 	
 	private CampgroundCLI camp;
@@ -46,8 +46,6 @@ public class CLImethodsTest {
 	
 	@Test
 	public void test_for_cost_of_stay() {
-		double cost = camp.getTotalCost(1, startDate, endDate);
-		double expectedCost = 175d;
 		assertEquals(175d, camp.getTotalCost(1, startDate, endDate), 0.0001);
 	}
 

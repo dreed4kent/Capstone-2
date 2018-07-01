@@ -27,7 +27,7 @@ public class JDBCparkDAOtest {
 		String sqlInsert = "Insert into park (park_id, name, location, establish_date, area, visitors, description) " + 
 		"Values (4, ?, 'California', '2018-02-05', 40500, 1000, 'A really nice park')";
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-		jdbcTemplate.update(sqlInsert, park_name);
+		jdbcTemplate.update(sqlInsert, park_name); 
 		dao = new JDBCParkDAO(dataSource);
 	}
 	

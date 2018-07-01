@@ -12,7 +12,7 @@ public class Site {
 	
 	
 	public int getSite_id() {
-		return site_id;
+		return site_id; 
 	}
 	public void setSite_id(int site_id) {
 		this.site_id = site_id;

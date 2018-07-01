@@ -18,7 +18,6 @@ public class CampgroundCLI {
 	private JDBCReservationDAO reservationDAO;
 	private JDBCCampgroundDAO campgroundDAO;
 	private JDBCParkDAO parkDAO;
-	
 	private int choice = 0;
 	Scanner in = new Scanner(System.in);
 
@@ -42,10 +41,12 @@ public class CampgroundCLI {
 		while (true) {
 			displayParkMenu();
 			displayCampgroundMenu();
+			if (choice == 0) {
+				displayParkMenu();
+			}
 			displayAvailableSites();
 			bookCampSite();
 		}
-	
 	}
 	
 	private void displayCampgroundMenu() {
@@ -53,8 +54,11 @@ public class CampgroundCLI {
 		List<Campground> cg_list = campgroundDAO.getAllCampgrounds(choice);
 		int ctr = 1;
 		for (Campground c : cg_list) {
-			System.out.println(ctr++ + ".) " + c.getCampground_name() + " \n" + "	" + "campground id: " + c.getCampground_id() + " \n" + "	" + "open month: " + c.getOpen_month()
-			+ " \n" + "	" + "close month: " + c.getClose_month()+ " \n" + "	" + "daily fee: $" + c.getDaily_fee() + " \n");
+			System.out.println(ctr++ + ".) " + c.getCampground_name() + " \n" + "	" + 
+										"campground id: " + c.getCampground_id() + " \n" + "	" + 
+										"open month: " + c.getOpen_month() + " \n" + "	" + 
+										"close month: " + c.getClose_month()+ " \n" + "	" + 
+										"daily fee: $" + c.getDaily_fee() + " \n");
 		}
 		System.out.println("Choose a campground or enter '0' to return to previous menu");
 		choice = Integer.parseInt(in.nextLine());
@@ -66,8 +70,12 @@ public class CampgroundCLI {
 		List<Park> parkList = parkDAO.getAllParks();
 		int ctr = 1;
 		for (Park p : parkList) {
-			System.out.println(ctr++ + ".) " + p.getParkName() + " \n" + "	" + "park_id: " + p.getParkId()+ " \n" + "	" + "location: " + 
-					p.getParkLocation()+ " \n" + "	" + "area: "+ p.getParkArea()+ " \n" + "	" + "annual visitors: " + p.getVisitors()+ " \n" + "	" + "description: " + p.getDescription() + " \n");
+			System.out.println(ctr++ + ".) " + p.getParkName() + " \n" + "	" + 
+										"park_id: " + p.getParkId()+ " \n" + "	" + 
+										"location: " + p.getParkLocation()+ " \n" + "	" + 
+										"area: "+ p.getParkArea()+ " \n" + "	" + 
+										"annual visitors: " + p.getVisitors()+ " \n" + "	" + 
+										"description: " + p.getDescription() + " \n");
 		}
 		System.out.println("Choose a park to visit");
 		choice = Integer.parseInt(in.nextLine());
@@ -81,7 +89,7 @@ public class CampgroundCLI {
 		while(true) {
 		System.out.println("Enter start date: YYYY-MM-DD");
 		String start = in.nextLine();
-		LocalDate startDate = LocalDate.parse(start);
+		LocalDate startDate = LocalDate.parse(start); 
 		
 		System.out.println("Enter end date: YYYY-MM-DD");
 		String end = in.nextLine();
@@ -90,7 +98,7 @@ public class CampgroundCLI {
 		System.out.println("Enter campground id: ");
 		int campground_id = Integer.parseInt(in.nextLine());
 		
-		List<Site> availableSites = reservationDAO.checkForAvailableReservations(startDate, endDate, campground_id);
+		List<Site> availableSites = reservationDAO.checkForAvailableSites(startDate, endDate, campground_id);
 			if(availableSites.isEmpty()) {
 				System.out.println("No available sites, please choose different dates.");
 			}
@@ -105,9 +113,7 @@ public class CampgroundCLI {
 	
 	public double getTotalCost(int campground_id, LocalDate startDate, LocalDate endDate) {
 		Campground campground = campgroundDAO.getCampgroundById(campground_id);
-		
-		//compare months from open and close to start and end
-		
+
 		double monthsStayed = endDate.getMonthValue() - startDate.getMonthValue();
 		double daysStayed = (endDate.getDayOfMonth()) - startDate.getDayOfMonth();
 		double totalCostOfStay = 0;
@@ -139,7 +145,7 @@ public class CampgroundCLI {
 		LocalDate reservationEndDate = LocalDate.parse(ending);
 		
 		reservationDAO.bookReservation(name, reservationStartDate, reservationEndDate, choice);
-		System.out.println("your confirmation number is: " + res.getReservation_id() + "\n");
+		System.out.println("your confirmation number is: " + res.getReservation_id() + "\n" + "confirmation number: " + res.getSite_id());
 		
 	}
 	
